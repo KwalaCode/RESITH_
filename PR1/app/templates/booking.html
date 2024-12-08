@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+
+{% block title %}Réservation{% endblock %}
+
+{% block content %}
+    <h1>Réserver un créneau</h1>
+    
+    <div class="booking-rules">
+        <h2>Règles de réservation</h2>
+        <ul>
+            {% if current_user.is_team_player %}
+                <li>Les joueurs d'équipe peuvent réserver du lundi au mercredi.</li>
+            {% else %}
+                <li>Les joueurs non-équipe peuvent réserver le jeudi et le vendredi.</li>
+            {% endif %}
+            <li>Une seule réservation par semaine est autorisée.</li>
+            <li>Les réservations sont possibles pour aujourd'hui et les jours à venir.</li>
+        </ul>
+    </div>
+
+    <form method="POST">
+        <div class="form-group">
+            <label for="date">Date :</label>
+            <select id="date" name="date" required>
+                {% for date, slots in available_slots.items() %}
+                    <option value="{{ date }}">{{ date.strftime('%d/%m/%Y') }} ({{ date.strftime('%A') }})</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="time_slot">Heure :</label>
+            <select id="time_slot" name="time_slot" required>
+                {% for slot in range(10) %}
+                    <option value="{{ slot }}">{{ slot + 10 }}:00 - {{ slot + 11 }}:00</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="opponent_id">Adversaire :</label>
+            <select id="opponent_id" name="opponent_id" required>
+                {% for opponent in potential_opponents %}
+                    <option value="{{ opponent.id }}">{{ opponent.email }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <button type="submit" class="btn btn-primary">Réserver</button>
+    </form>
+
+    <h2>Créneaux disponibles</h2>
+    <div class="available-slots">
+        {% for date, slots in available_slots.items() %}
+            <div class="date-column">
+                <h3>{{ date.strftime('%d/%m/%Y') }} ({{ date.strftime('%A') }})</h3>
+                <ul>
+                    {% for slot in slots %}
+                        <li>{{ slot + 10 }}:00 - {{ slot + 11 }}:00</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}
+

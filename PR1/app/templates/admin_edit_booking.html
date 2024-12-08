@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+{% block title %}Modifier la réservation{% endblock %}
+
+{% block content %}
+    <h1>Modifier la réservation</h1>
+    <form method="POST">
+        <div class="form-group">
+            <label for="user_id">Utilisateur</label>
+            <select class="form-control" id="user_id" name="user_id" required>
+                {% for user in users %}
+                    <option value="{{ user.id }}" {% if user.id == booking.user_id %}selected{% endif %}>{{ user.email }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="date">Date</label>
+            <input type="date" class="form-control" id="date" name="date" value="{{ booking.date.strftime('%Y-%m-%d') }}" required>
+        </div>
+        <div class="form-group">
+            <label for="time_slot">Heure</label>
+            <select class="form-control" id="time_slot" name="time_slot" required>
+                {% for i in range(10) %}
+                    <option value="{{ i }}" {% if i == booking.time_slot %}selected{% endif %}>{{ i + 10 }}:00 - {{ i + 11 }}:00</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="status">Statut</label>
+            <select class="form-control" id="status" name="status" required>
+                <option value="pending" {% if booking.status == 'pending' %}selected{% endif %}>En attente</option>
+                <option value="confirmed" {% if booking.status == 'confirmed' %}selected{% endif %}>Confirmé</option>
+                <option value="refused" {% if booking.status == 'refused' %}selected{% endif %}>Refusé</option>
+            </select>
+        </div>
+        <button type="submit" class="btn btn-primary">Mettre à jour</button>
+    </form>
+{% endblock %}
+

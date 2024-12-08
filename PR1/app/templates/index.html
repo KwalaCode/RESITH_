@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block title %}Accueil{% endblock %}
+
+{% block content %}
+    <h1>Bienvenue sur RESITH</h1>
+    <p>Réservations pour la semaine prochaine :</p>
+    <table>
+        <thead>
+            <tr>
+                <th>Date</th>
+                <th>Heure</th>
+                <th>Joueur 1</th>
+                <th>Joueur 2</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for reservation in reservations %}
+                <tr>
+                    <td>{{ reservation.date.strftime('%d/%m/%Y') }}</td>
+                    <td>{{ reservation.time_slot + 10 }}:00 - {{ reservation.time_slot + 11 }}:00</td>
+                    <td>{{ reservation.user.email }}</td>
+                    <td>{{ reservation.opponent.email }}</td>
+                    <td>-</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

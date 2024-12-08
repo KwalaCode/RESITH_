@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block title %}Gestion des utilisateurs{% endblock %}
+
+{% block content %}
+    <h1>Gestion des utilisateurs</h1>
+    <a href="{{ url_for('admin.add_user') }}" class="btn btn-primary">Ajouter un utilisateur</a>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Email</th>
+                <th>Joueur d'équipe</th>
+                <th>Admin</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for user in users %}
+                <tr>
+                    <td>{{ user.email }}</td>
+                    <td>{{ 'Oui' if user.is_team_player else 'Non' }}</td>
+                    <td>{{ 'Oui' if user.is_admin else 'Non' }}</td>
+                    <td>
+                        <a href="{{ url_for('admin.edit_user', user_id=user.id) }}" class="btn btn-sm btn-primary">Modifier</a>
+                        <a href="{{ url_for('admin.delete_user', user_id=user.id) }}" class="btn btn-sm btn-danger" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cet utilisateur ?')">Supprimer</a>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
+

@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+
+{% block title %}Admin Panel{% endblock %}
+
+{% block content %}
+    <h1>Admin Panel</h1>
+    
+    <h2>Pending Reservations</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>User</th>
+                <th>Date</th>
+                <th>Time Slot</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for reservation in pending_reservations %}
+                <tr>
+                    <td>{{ reservation.user.email }}</td>
+                    <td>{{ reservation.date }}</td>
+                    <td>{{ reservation.time_slot + 10 }}:00 - {{ reservation.time_slot + 11 }}:00</td>
+                    <td>
+                        <a href="{{ url_for('admin.approve_reservation', reservation_id=reservation.id) }}">Approve</a>
+                        <a href="{{ url_for('admin.refuse_reservation', reservation_id=reservation.id) }}">Refuse</a>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="4">No pending reservations</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <h2>User Management</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Email</th>
+                <th>Is Team Player</th>
+                <th>Is Admin</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for user in users %}
+                <tr>
+                    <td>{{ user.email }}</td>
+                    <td>{{ 'Yes' if user.is_team_player else 'No' }}</td>
+                    <td>{{ 'Yes' if user.is_admin else 'No' }}</td>
+                    <td>
+                        <a href="{{ url_for('admin.edit_user', user_id=user.id) }}">Edit</a>
+                        <a href="{{ url_for('admin.delete_user', user_id=user.id) }}" onclick="return confirm('Are you sure you want to delete this user?');">Delete</a>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ url_for('admin.add_user') }}">Add New User</a>
+{% endblock %}
+

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RESITH - {% block title %}{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <header>
+        <nav>
+            <ul>
+                <li><a href="{{ url_for('main.index') }}">Accueil</a></li>
+                {% if current_user.is_authenticated %}
+                    <li><a href="{{ url_for('booking.book') }}">Réserver</a></li>
+                    {% if current_user.is_admin %}
+                        <li><a href="{{ url_for('admin.admin_panel') }}">Admin</a></li>
+                        <li><a href="{{ url_for('admin.manage_users') }}">Gérer les utilisateurs</a></li>
+                        <li><a href="{{ url_for('admin.manage_bookings') }}">Gérer les réservations</a></li>
+                    {% endif %}
+                    <li><a href="{{ url_for('auth.logout') }}">Déconnexion</a></li>
+                {% else %}
+                    <li><a href="{{ url_for('auth.login') }}">Connexion</a></li>
+                    <li><a href="{{ url_for('auth.signup') }}">Inscription</a></li>
+                {% endif %}
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                <div class="flashes">
+                    {% for message in messages %}
+                        <p class="flash-message">{{ message }}</p>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer>
+        <p>Designed by Yassine Saber</p>
+        <a href="https://www.instagram.com/comite_sportif_esith/" target="_blank">Suivez-nous sur Instagram</a>
+    </footer>
+</body>
+</html>
+
