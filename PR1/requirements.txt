@@ -7,3 +7,4 @@ SQLAlchemy==2.0.15
 Werkzeug==2.3.4
 alembic==1.10.4
 urllib3==2.0.2
+gunicorn==21.2.0
